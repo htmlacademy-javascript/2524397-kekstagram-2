@@ -6,33 +6,6 @@ const PHOTO_DESCRIPTION = ['Получилось хорошо', 'Вот кака
 const USERS_NAMES = ['Антон','Борис','Владимир','Григорий','Дмитрий','Елесей','Жанна','Зинаида','Ирина'];
 const USERS_COMMENTS = ['Всё отлично!','В целом всё неплохо. Но не всё.','Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.','Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.','Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.','Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
-const getPhotoIdX = () => {
-  let photoId = 0;
-  return function () {
-    return ++photoId;
-  };
-};
-
-const getPhotoId = getPhotoIdX();
-
-const getPhotoUrlX = () => {
-  let photoUrl = 0;
-  return function () {
-    return `photos/${++photoUrl}.jpg`;
-  };
-};
-
-const getPhotoUrl = getPhotoUrlX();
-
-const getCommentIdX = () => {
-  let commentId = 0;
-  return function () {
-    return ++commentId;
-  };
-};
-
-const getCommentId = getCommentIdX();
-
 const getCommentMessage = () => {
   const messageQuantity = getRandomInteger(1, 2);
   if (messageQuantity === 2) {
@@ -41,18 +14,30 @@ const getCommentMessage = () => {
   return getRandomArrayElement(USERS_COMMENTS);
 };
 
+const counter = () => {
+  let counterValue = 0;
+  return function () {
+    return ++counterValue;
+  };
+};
+
+const getPhotoId = counter();
+const getCommentId = counter();
+const getUrlId = counter();
+
 const createPhotoDescription = () => ({
   photoId: getPhotoId(),
-  url: getPhotoUrl(),
+  url: `photos/${getUrlId()}.jpg`,
   description:  getRandomArrayElement(PHOTO_DESCRIPTION),
   likes: getRandomInteger(15, 200),
-  comments: {
+  comments: Array.from({length: getRandomInteger(0, 30)}, () => ({
     commentId: getCommentId(),
     avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
     message: getCommentMessage(),
     name: getRandomArrayElement(USERS_NAMES),
-  }
+  })),
 });
+
 
 const GetPhotoData = () => Array.from({length: PHOTO_POSTS_QUANTITY}, createPhotoDescription);
 
