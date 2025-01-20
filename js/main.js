@@ -1,3 +1,2 @@
-import {GetPhotoData} from './data.js';
-
-GetPhotoData();
+import {createMiniatures} from './miniatures.js';
+createMiniatures();
