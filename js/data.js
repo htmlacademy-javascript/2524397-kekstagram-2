@@ -41,27 +41,4 @@ const createPhotoDescription = () => ({
 
 const GetPhotoData = () => Array.from({length: PHOTO_POSTS_QUANTITY}, createPhotoDescription);
 
-export {GetPhotoData};
-
-/*
-const createPhotoDescription = () => {
-  let photoId = 0;
-  let commentId = 0;
-  let urlIndex = 0;
-  return () => ({
-    photoId: ++photoId,
-    url: `photos/${++urlIndex}.jpg`,
-    description:  getRandomArrayElement(PHOTO_DESCRIPTION),
-    likes: getRandomInteger(15, 200),
-    comments: {
-      commentId: ++commentId,
-      avatar: `img/avatar-${getRandomInteger(1, 6)}.svg`,
-      message: getRandomArrayElement(USERS_COMMENTS),
-      name: getRandomArrayElement(USERS_NAMES),
-    }
-  });
-};
-
-const photoData = Array.from({length: PHOTO_POSTS_QUANTITY}, createPhotoDescription());
-console.log(photoData);
-*/
+export {GetPhotoData, PHOTO_POSTS_QUANTITY};
