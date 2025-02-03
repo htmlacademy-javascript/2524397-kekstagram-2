@@ -19,8 +19,6 @@ const renderBigPicture = (pictureId) => {
   bigPictureDescription.textContent = currentPicture.description;
 
   renderComments(currentPicture.comments);
-
-  //console.log(currentPicture);
 };
 
 const onModalEscapeKeywdown = function (evt) {
@@ -33,20 +31,13 @@ const onModalEscapeKeywdown = function (evt) {
 
 const onMiniatureClick = function () {
   picturesContainer.addEventListener('click', (evt) => {
-    const socialCommentCount = bigPicture.querySelector('.social__comment-count');
-    const commentsLoader = bigPicture.querySelector('.comments-loader');
     const currentDomPictureElement = evt.target.closest('.picture');
-    //console.log(currentDomPictureElement);
 
     if (currentDomPictureElement) {
       evt.preventDefault();
       renderBigPicture(currentDomPictureElement.dataset.pictureId);
-
       document.addEventListener('keydown', onModalEscapeKeywdown);
-
       bigPicture.classList.remove('hidden');
-      socialCommentCount.classList.add('hidden'); // 8.2
-      commentsLoader.classList.add('hidden'); // 8.2
       document.body.classList.add('modal-open');
     }
   });
