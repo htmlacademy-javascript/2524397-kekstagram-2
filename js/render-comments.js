@@ -11,7 +11,6 @@ const renderComments = function (arrayOfComments) {
   const socialCommentTotalCount = document.querySelector('.social__comment-total-count');
   const socialCommentShownCount = document.querySelector('.social__comment-shown-count');
   currentPictureComments = arrayOfComments; // получили массив коментариев
-  //console.log(currentPictureComments); // проверка
   socialCommentTotalCount.textContent = currentPictureComments.length;
   const commentsFragments = document.createDocumentFragment();
   const renderedComments = currentPictureComments.slice(currentViewComments, currentViewComments + COMENTS_RENDER_STEP); // показанные коментарии
@@ -52,4 +51,4 @@ loadMoreComments.addEventListener('click', () => {
   renderComments(currentPictureComments);
 });
 
-export {renderComments};
+export {renderComments, socialCommentsList};

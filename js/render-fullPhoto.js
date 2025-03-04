@@ -1,17 +1,13 @@
-import {arrayOfPicture} from './miniatures.js';
 import {isEscapeKey} from './utils';
 import {renderComments} from './render-comments.js';
 
-const picturesContainer = document.querySelector('.pictures');
 const bigPicture = document.querySelector('.big-picture');
 
-const renderBigPicture = (pictureId) => {
+const renderBigPicture = (currentPicture) => {
   const bigPictureImg = bigPicture.querySelector('.big-picture__img').querySelector('img');
   const likesCount = bigPicture.querySelector('.likes-count');
   const socialCommentShownCount = bigPicture.querySelector('.social__comment-shown-count');
   const bigPictureDescription = bigPicture.querySelector('.social__caption');
-
-  const currentPicture = arrayOfPicture.find((picture) => picture.photoId === Number(pictureId));
 
   bigPictureImg.src = currentPicture.url;
   likesCount.textContent = currentPicture.likes;
@@ -29,20 +25,6 @@ const onModalEscapeKeywdown = function (evt) {
   }
 };
 
-const onMiniatureClick = function () {
-  picturesContainer.addEventListener('click', (evt) => {
-    const currentDomPictureElement = evt.target.closest('.picture');
-
-    if (currentDomPictureElement) {
-      evt.preventDefault();
-      renderBigPicture(currentDomPictureElement.dataset.pictureId);
-      document.addEventListener('keydown', onModalEscapeKeywdown);
-      bigPicture.classList.remove('hidden');
-      document.body.classList.add('modal-open');
-    }
-  });
-};
-
 const onCloseButtonClick = function () {
   const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
   bigPictureCloseButton.addEventListener('click', () => {
@@ -55,4 +37,4 @@ const onCloseButtonClick = function () {
 
 onCloseButtonClick();
 
-export {onMiniatureClick};
+export {renderBigPicture, onModalEscapeKeywdown, bigPicture};

@@ -1,6 +1,6 @@
-import {createMiniatures, arrayOfPicture} from './miniatures.js';
-import {onMiniatureClick} from './render-fullPhoto.js';
-createMiniatures(arrayOfPicture);
-onMiniatureClick();
+import {GetPhotoData} from './data.js';
+import {createMiniatures} from './miniatures.js';
 
+const arrayOfPicture = GetPhotoData();
+createMiniatures(arrayOfPicture);
 

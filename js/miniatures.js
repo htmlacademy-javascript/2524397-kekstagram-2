@@ -1,9 +1,9 @@
-import {GetPhotoData} from './data.js';
+import {renderBigPicture, onModalEscapeKeywdown, bigPicture} from './render-fullPhoto';
+import {socialCommentsList} from './render-comments.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
 
-const arrayOfPicture = GetPhotoData();
 
 const miniatures = document.createDocumentFragment();
 
@@ -20,6 +20,21 @@ const createMiniatures = function(array) {
   });
 
   picturesContainer.append(miniatures);
+
+  picturesContainer.addEventListener('click', (evt) => {
+    const currentDomPictureElement = evt.target.closest('.picture');
+
+    if (currentDomPictureElement) {
+      evt.preventDefault();
+      socialCommentsList.textContent = '';
+      const currentPicture = array.find((picture) => picture.photoId === Number(currentDomPictureElement.dataset.pictureId));
+      renderBigPicture(currentPicture);
+      document.addEventListener('keydown', onModalEscapeKeywdown);
+      bigPicture.classList.remove('hidden');
+      document.body.classList.add('modal-open');
+    }
+  });
 };
 
-export {createMiniatures, arrayOfPicture};
+
+export {createMiniatures};
