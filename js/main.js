@@ -1,2 +1,6 @@
+import {GetPhotoData} from './data.js';
 import {createMiniatures} from './miniatures.js';
-createMiniatures();
+
+const arrayOfPicture = GetPhotoData();
+createMiniatures(arrayOfPicture);
+

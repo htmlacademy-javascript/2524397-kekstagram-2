@@ -41,4 +41,4 @@ const createPhotoDescription = () => ({
 
 const GetPhotoData = () => Array.from({length: PHOTO_POSTS_QUANTITY}, createPhotoDescription);
 
-export {GetPhotoData, PHOTO_POSTS_QUANTITY};
+export {GetPhotoData};
