@@ -1,4 +1,4 @@
-const COMENTS_RENDER_STEP = 5;
+const COMMENTS_RENDER_STEP = 5;
 const socialCommentsList = document.querySelector('.social__comments');
 const loadMoreComments = document.querySelector('.social__comments-loader'); // загрузить еще
 const socialCommentTotalCount = document.querySelector('.social__comment-total-count');
@@ -17,14 +17,11 @@ const commentsList = {
     }
 
     this.listener = () => render();
-    loadMoreComments.addEventListener('click', this.listener);
-
-    loadMoreComments.removeEventListener('click', this.listener);
 
     function render () {
       socialCommentTotalCount.textContent = arrayOfComments.length;
       const commentsFragments = document.createDocumentFragment();
-      const renderedComments = arrayOfComments.slice(currentViewComments, currentViewComments + COMENTS_RENDER_STEP);
+      const renderedComments = arrayOfComments.slice(currentViewComments, currentViewComments + COMMENTS_RENDER_STEP);
 
       renderedComments.forEach((element) => {
         const newCommentItem = document.createElement('li');
