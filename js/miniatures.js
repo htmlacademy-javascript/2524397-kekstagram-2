@@ -1,5 +1,4 @@
 import {renderBigPicture, onModalEscapeKeywdown, bigPicture} from './render-fullPhoto';
-import {socialCommentsList} from './render-comments.js';
 
 const picturesContainer = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture').content.querySelector('.picture');
@@ -26,7 +25,6 @@ const createMiniatures = function(array) {
 
     if (currentDomPictureElement) {
       evt.preventDefault();
-      socialCommentsList.textContent = '';
       const currentPicture = array.find((picture) => picture.photoId === Number(currentDomPictureElement.dataset.pictureId));
       renderBigPicture(currentPicture);
       document.addEventListener('keydown', onModalEscapeKeywdown);
