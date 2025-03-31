@@ -1,54 +1,62 @@
-
-const COMENTS_RENDER_STEP = 5; //шаг отрисовки
-let currentViewComments = 0; //текущее значение
-let currentPictureComments;
-
+const COMMENTS_RENDER_STEP = 5;
 const socialCommentsList = document.querySelector('.social__comments');
-const socialCommentsDom = socialCommentsList.querySelectorAll('.social__comment');
 const loadMoreComments = document.querySelector('.social__comments-loader'); // загрузить еще
+const socialCommentTotalCount = document.querySelector('.social__comment-total-count');
+const socialCommentShownCount = document.querySelector('.social__comment-shown-count');
 
-const renderComments = function (arrayOfComments) {
-  const socialCommentTotalCount = document.querySelector('.social__comment-total-count');
-  const socialCommentShownCount = document.querySelector('.social__comment-shown-count');
-  currentPictureComments = arrayOfComments; // получили массив коментариев
-  socialCommentTotalCount.textContent = currentPictureComments.length;
-  const commentsFragments = document.createDocumentFragment();
-  const renderedComments = currentPictureComments.slice(currentViewComments, currentViewComments + COMENTS_RENDER_STEP); // показанные коментарии
 
-  socialCommentsDom.forEach((element) => {
-    element.remove();
-  });
+const commentsList = {
+  listener: null,
+  renderComments: function (arrayOfComments) {
+    let currentViewComments = 0;
+    socialCommentsList.textContent = '';
+    loadMoreComments.classList.remove('hidden');
 
-  renderedComments.forEach((element) => { // arrayOfComments -> renderedComments
-    const newCommentItem = document.createElement('li');
-    newCommentItem.classList.add('social__comment');
+    if (this.listener) {
+      loadMoreComments.removeEventListener('click', this.listener);
+    }
 
-    const newCommentImg = document.createElement('img');
-    newCommentImg.classList.add('social__picture');
-    newCommentImg.src = element.avatar;
-    newCommentImg.alt = element.name;
-    newCommentItem.append(newCommentImg);
+    this.listener = () => render();
 
-    const newCommentText = document.createElement('p');
-    newCommentText.classList.add('social__text');
-    newCommentText.textContent = element.message;
-    newCommentItem.append(newCommentText);
+    function render () {
+      socialCommentTotalCount.textContent = arrayOfComments.length;
+      const commentsFragments = document.createDocumentFragment();
+      const renderedComments = arrayOfComments.slice(currentViewComments, currentViewComments + COMMENTS_RENDER_STEP);
 
-    commentsFragments.append(newCommentItem);
-  });
+      renderedComments.forEach((element) => {
+        const newCommentItem = document.createElement('li');
+        newCommentItem.classList.add('social__comment');
 
-  currentViewComments += renderedComments.length; // прибавили шаг
-  socialCommentShownCount.textContent = currentViewComments;
+        const newCommentImg = document.createElement('img');
+        newCommentImg.classList.add('social__picture');
+        newCommentImg.src = element.avatar;
+        newCommentImg.alt = element.name;
+        newCommentItem.append(newCommentImg);
 
-  if (currentViewComments >= arrayOfComments.length) {
-    loadMoreComments.classList.add('hidden');
-  }
+        const newCommentText = document.createElement('p');
+        newCommentText.classList.add('social__text');
+        newCommentText.textContent = element.message;
+        newCommentItem.append(newCommentText);
 
-  socialCommentsList.append(commentsFragments);
+        commentsFragments.append(newCommentItem);
+      });
+
+      currentViewComments += renderedComments.length;
+      socialCommentShownCount.textContent = currentViewComments;
+
+      if (currentViewComments >= arrayOfComments.length) {
+        loadMoreComments.classList.add('hidden');
+      }
+
+      socialCommentsList.append(commentsFragments);
+    }
+
+    render();
+
+    if (arrayOfComments.length > 5) {
+      loadMoreComments.addEventListener('click', this.listener);
+    }
+  },
 };
 
-loadMoreComments.addEventListener('click', () => {
-  renderComments(currentPictureComments);
-});
-
-export {renderComments, socialCommentsList};
+export {commentsList};

@@ -1,5 +1,5 @@
 import {isEscapeKey} from './utils';
-import {renderComments} from './render-comments.js';
+import {commentsList} from './render-comments.js';
 
 const bigPicture = document.querySelector('.big-picture');
 
@@ -14,7 +14,7 @@ const renderBigPicture = (currentPicture) => {
   socialCommentShownCount.textContent = currentPicture.comments.length;
   bigPictureDescription.textContent = currentPicture.description;
 
-  renderComments(currentPicture.comments);
+  commentsList.renderComments(currentPicture.comments);
 };
 
 const onModalEscapeKeywdown = function (evt) {
