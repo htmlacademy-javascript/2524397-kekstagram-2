@@ -9,4 +9,9 @@ const getRandomArrayElement = (array) => array[getRandomInteger(0, array.length 
 
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-export {getRandomInteger, getRandomArrayElement, isEscapeKey};
+//Функция для поиска одинаковых значений в массиве
+function hasDuplicates(arr) {
+  return new Set(arr).size !== arr.length;
+}
+
+export {getRandomInteger, getRandomArrayElement, isEscapeKey, hasDuplicates};
