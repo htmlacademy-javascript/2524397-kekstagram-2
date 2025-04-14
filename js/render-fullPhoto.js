@@ -1,5 +1,5 @@
 import {isEscapeKey} from './utils';
-import {commentsList} from './render-comments.js';
+import {CommentsList} from './render-comments.js';
 
 const bigPicture = document.querySelector('.big-picture');
 
@@ -14,7 +14,7 @@ const renderBigPicture = (currentPicture) => {
   socialCommentShownCount.textContent = currentPicture.comments.length;
   bigPictureDescription.textContent = currentPicture.description;
 
-  commentsList.renderComments(currentPicture.comments);
+  CommentsList.renderComments(currentPicture.comments);
 };
 
 const onModalEscapeKeywdown = function (evt) {
@@ -25,7 +25,7 @@ const onModalEscapeKeywdown = function (evt) {
   }
 };
 
-const onCloseButtonClick = function () {
+const closeModal = function () {
   const bigPictureCloseButton = bigPicture.querySelector('.big-picture__cancel');
   bigPictureCloseButton.addEventListener('click', () => {
     bigPicture.classList.add('hidden');
@@ -35,6 +35,6 @@ const onCloseButtonClick = function () {
   document.removeEventListener('keydown', onModalEscapeKeywdown);
 };
 
-onCloseButtonClick();
+closeModal();
 
 export {renderBigPicture, onModalEscapeKeywdown, bigPicture};

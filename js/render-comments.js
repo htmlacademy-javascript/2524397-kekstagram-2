@@ -5,9 +5,9 @@ const socialCommentTotalCount = document.querySelector('.social__comment-total-c
 const socialCommentShownCount = document.querySelector('.social__comment-shown-count');
 
 
-const commentsList = {
+const CommentsList = {
   listener: null,
-  renderComments: function (arrayOfComments) {
+  renderComments (arrayOfComments) {
     let currentViewComments = 0;
     socialCommentsList.textContent = '';
     loadMoreComments.classList.remove('hidden');
@@ -15,8 +15,6 @@ const commentsList = {
     if (this.listener) {
       loadMoreComments.removeEventListener('click', this.listener);
     }
-
-    this.listener = () => render();
 
     function render () {
       socialCommentTotalCount.textContent = arrayOfComments.length;
@@ -54,9 +52,10 @@ const commentsList = {
     render();
 
     if (arrayOfComments.length > 5) {
+      this.listener = () => render();
       loadMoreComments.addEventListener('click', this.listener);
     }
   },
 };
 
-export {commentsList};
+export {CommentsList};
