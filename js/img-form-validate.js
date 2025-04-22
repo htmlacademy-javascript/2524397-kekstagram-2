@@ -1,4 +1,6 @@
 import {isEscapeKey, hasDuplicates} from './utils';
+import { imageResize } from './img-editor';
+
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
 const imgUploadForm = document.querySelector('.img-upload__form');
@@ -40,6 +42,7 @@ function closeModal () {
   imgUploadOverlay.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   imgUploadForm.reset();
+  imageResize.resetEditor();
 
   document.removeEventListener('keydown', onModalEscapeKeydown);
   imgUploadClose.removeEventListener('click', onCloseButtonClick);
@@ -90,5 +93,15 @@ function validateComments (value) {
 
 imgUploadInput.addEventListener('change', openModal);
 
-const example = 1;
-export {example};
+
+// Управление отправкой формы
+
+const formSubmit = (evt) => {
+  evt.preventDefault();
+
+  if (pristineImgUpload.validate()) {
+    imgUploadForm.submit();
+  }
+};
+
+imgUploadForm.addEventListener('submit', formSubmit);
