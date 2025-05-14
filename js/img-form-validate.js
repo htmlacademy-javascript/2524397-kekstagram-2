@@ -1,5 +1,5 @@
 import {isEscapeKey, hasDuplicates} from './utils';
-import { imageResize } from './img-editor';
+import {imageResize} from './img-editor';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -96,12 +96,88 @@ imgUploadInput.addEventListener('change', openModal);
 
 // Управление отправкой формы
 
-const formSubmit = (evt) => {
+function showSuccessMessage() {
+  const successMessage = document.querySelector('#success').content.cloneNode(true);
+  const successContainer = document.createElement('div');
+  successContainer.appendChild(successMessage);
+  document.body.appendChild(successContainer);
+  const successButton = successContainer.querySelector('.success__button');
+  const successInner = successContainer.querySelector('.success__inner');
+
+  const onSuccessMessageEscapeKeywdown = function (evt) {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      successContainer.remove();
+    }
+  };
+
+  const closeSuccessMessageOutArea = function (evt) {
+    if (!successInner.contains(evt.target)) {
+      successContainer.remove();
+    }
+  };
+
+  successButton.addEventListener('click', () => {
+    successContainer.remove();
+  });
+
+  document.addEventListener('keydown', onSuccessMessageEscapeKeywdown);
+  document.addEventListener('click', closeSuccessMessageOutArea);
+}
+
+function showErrorMessage(){
+  const errorMessage = document.querySelector('#error').content.cloneNode(true);
+  const errorContainer = document.createElement('div');
+  errorContainer.appendChild(errorMessage);
+  document.body.appendChild(errorContainer);
+  const errorButton = errorContainer.querySelector('.error__button');
+  const errorInner = errorContainer.querySelector('.error__inner');
+
+  const onErrorMessageEscapeKeywdown = function (evt) {
+    if (isEscapeKey(evt)) {
+      evt.preventDefault();
+      evt.stopPropagation();
+      errorContainer.remove();
+    }
+  };
+
+  const closEerrorMessageOutArea = function (evt) {
+    if (!errorInner.contains(evt.target)) {
+      errorContainer.remove();
+    }
+  };
+
+  errorButton.addEventListener('click', () => {
+    errorContainer.remove();
+  });
+
+  document.addEventListener('keydown', onErrorMessageEscapeKeywdown);
+  document.addEventListener('click', closEerrorMessageOutArea);
+}
+
+imgUploadForm.addEventListener('submit', (evt) => {
   evt.preventDefault();
 
-  if (pristineImgUpload.validate()) {
-    imgUploadForm.submit();
-  }
-};
+  const isValid = pristineImgUpload.validate();
+  if (isValid) {
+    const formData = new FormData(evt.target);
 
-imgUploadForm.addEventListener('submit', formSubmit);
+    fetch('https://31.javascript.htmlacademy.pro/kekstagram',
+      {
+        method: 'POST',
+        body: formData,
+      },
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Ошибка: ${response.status}`);
+        }
+        closeModal();
+        showSuccessMessage();
+      })
+      .catch(() => {
+        showErrorMessage();
+      });
+  }
+});
+

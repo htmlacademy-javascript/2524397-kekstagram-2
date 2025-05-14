@@ -111,7 +111,7 @@ if (effectNone.checked) {
 const changeFilterTo = (filter) => {
 
   filter = FILTERS_CONFIG[filter];
-  if (filter === 'none') {
+  if (filter.filter === 'none') {
     imgUpload.classList.add('hidden');
   } else {
     imgUpload.classList.remove('hidden');
@@ -123,12 +123,11 @@ const changeFilterTo = (filter) => {
     step: filter.step,
   });
 
-  if (filter.filter) {
+  if (filter.filter !== 'none') {
     imgPreview.style.filter = `${filter.filter}(${filter.start}${filter.prefix})`;
   } else {
     imgPreview.style.filter = '';
   }
-
 };
 
 slider.noUiSlider.on('update', () => {
