@@ -1,5 +1,7 @@
 import {isEscapeKey, hasDuplicates} from './utils';
-import { imageResize } from './img-editor';
+import {imageResize, resetEffects} from './img-editor';
+import {showSuccessMessage, showErrorMessage} from './img-form-submit';
+import {postData} from './api';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -13,7 +15,6 @@ const imgUploadClose = document.querySelector('.img-upload__cancel');
 
 const commentAreaErrorMessage = `Длина комментария больше ${COMMENT_MAX_LENGTH} символов`;
 
-//обработчик на закрытие модалки по ESC
 const onModalEscapeKeydown = (evt) => {
   if (isEscapeKey(evt) && !hashtagsInput.matches(':focus') && !commentArea.matches(':focus')) {
     evt.preventDefault();
@@ -21,12 +22,10 @@ const onModalEscapeKeydown = (evt) => {
   }
 };
 
-//функция для клика по кнопке закрытия
 const onCloseButtonClick = () => {
   closeModal();
 };
 
-//обработчик на нажатие элемента загрузки картинки
 const openModal = () => {
   imgUploadOverlay.classList.remove('hidden');
   bodyElement.classList.add('modal-open');
@@ -37,18 +36,17 @@ const openModal = () => {
   imgUploadClose.addEventListener('click', onCloseButtonClick);
 };
 
-//фукция для обработчика на закрытие модалки по кнопке
 function closeModal () {
   imgUploadOverlay.classList.add('hidden');
   bodyElement.classList.remove('modal-open');
   imgUploadForm.reset();
   imageResize.resetEditor();
+  resetEffects();
 
   document.removeEventListener('keydown', onModalEscapeKeydown);
   imgUploadClose.removeEventListener('click', onCloseButtonClick);
 }
 
-//ВАЛИДАЦИЯ ХЭШТЕГИ
 const pristineImgUpload = new Pristine(imgUploadForm, {
   classTo: 'img-upload__field-wrapper',
   errorClass: 'img-upload__field-wrapper--error',
@@ -84,7 +82,6 @@ function validateQuantityHashtags (value) {
   return true;
 }
 
-//ВАЛИДАЦИЯ КОМЕНТАРИЕВ
 pristineImgUpload.addValidator(commentArea, validateComments, commentAreaErrorMessage);
 
 function validateComments (value) {
@@ -93,15 +90,27 @@ function validateComments (value) {
 
 imgUploadInput.addEventListener('change', openModal);
 
+const imgUploadSubmitButton = document.querySelector('.img-upload__submit');
 
-// Управление отправкой формы
-
-const formSubmit = (evt) => {
-  evt.preventDefault();
-
-  if (pristineImgUpload.validate()) {
-    imgUploadForm.submit();
-  }
+const blockSubmitButton = () => {
+  imgUploadSubmitButton.disabled = true;
+  imgUploadSubmitButton.textContent = 'Публикую...';
 };
 
-imgUploadForm.addEventListener('submit', formSubmit);
+const unblockSubmitButton = () => {
+  imgUploadSubmitButton.disabled = false;
+  imgUploadSubmitButton.textContent = 'Опубликовать';
+};
+
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  const isValid = pristineImgUpload.validate();
+  if (!isValid) {
+    return;
+  }
+  blockSubmitButton();
+  const formData = new FormData(evt.target);
+  postData (formData, showSuccessMessage, unblockSubmitButton, closeModal, showErrorMessage);
+});
+
