@@ -34,6 +34,7 @@ function resizeImage () {
     resetEditor () {
       currentSize = SCALE_IMAGE_CONFIG.START;
       updateSize();
+      imgPreview.style.filter = '';
     }
   };
 }
@@ -53,42 +54,42 @@ const effectNone = document.querySelector('#effect-none');
 
 const FILTERS_CONFIG = {
   none: {
-    filter: 'none',
+    key: 'none',
     range: { min: 0, max: 100 },
     step: 1,
     start: 100,
     prefix: '',
   },
   chrome: {
-    filter: 'grayscale',
+    key: 'grayscale',
     range: { min: 0, max: 1 },
     step: 0.1,
     start: 1,
     prefix: '',
   },
   sepia: {
-    filter: 'sepia',
+    key: 'sepia',
     range: { min: 0, max: 1 },
     step: 0.1,
     start: 1,
     prefix: '',
   },
   marvin: {
-    filter: 'invert',
+    key: 'invert',
     range: { min: 0, max: 100 },
     step: 1,
     start: 100,
     prefix: '%',
   },
   phobos: {
-    filter: 'blur',
+    key: 'blur',
     range: { min: 0, max: 3 },
     step: 0.1,
     start: 3,
     prefix: 'px',
   },
   heat: {
-    filter: 'brightness',
+    key: 'brightness',
     range: { min: 1, max: 3 },
     step: 0.1,
     start: 3,
@@ -108,10 +109,17 @@ if (effectNone.checked) {
   imgPreview.style.filter = '';
 }
 
-const changeFilterTo = (filter) => {
+const resetEffects = () => {
+  effectNone.checked = true;
+  imgUpload.classList.add('hidden');
+  imgPreview.style.filter = '';
+};
 
-  filter = FILTERS_CONFIG[filter];
-  if (filter.filter === 'none') {
+const changeFilterTo = (filterKey) => {
+
+  const filter = FILTERS_CONFIG[filterKey];
+
+  if (filter.key === 'none') {
     imgUpload.classList.add('hidden');
   } else {
     imgUpload.classList.remove('hidden');
@@ -123,8 +131,8 @@ const changeFilterTo = (filter) => {
     step: filter.step,
   });
 
-  if (filter.filter !== 'none') {
-    imgPreview.style.filter = `${filter.filter}(${filter.start}${filter.prefix})`;
+  if (filter.key !== 'none') {
+    imgPreview.style.filter = `${filter.key}(${filter.start}${filter.prefix})`;
   } else {
     imgPreview.style.filter = '';
   }
@@ -137,7 +145,7 @@ slider.noUiSlider.on('update', () => {
   const currentFilter = FILTERS_CONFIG[selectedRadio.value];
 
   if (currentFilter !== 'none') {
-    imgPreview.style.filter = `${currentFilter.filter}(${value}${currentFilter.prefix})`;
+    imgPreview.style.filter = `${currentFilter.key}(${value}${currentFilter.prefix})`;
   } else {
     imgPreview.style.filter = '';
   }
@@ -149,4 +157,4 @@ imgUploadEffects.addEventListener('change', (evt) => {
   }
 });
 
-export {imageResize};
+export {imageResize, resetEffects};
