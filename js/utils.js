@@ -1,3 +1,5 @@
+const DEFAULT_DELAY = 500;
+
 const getRandomInteger = (a, b) => {
   const lower = Math.ceil(Math.min(a, b));
   const upper = Math.floor(Math.max(a, b));
@@ -13,5 +15,24 @@ function hasDuplicates(arr) {
   return new Set(arr).size !== arr.length;
 }
 
+function debounce (callback, timeoutDelay = DEFAULT_DELAY) {
+  let timeoutId;
 
-export {getRandomInteger, getRandomArrayElement, isEscapeKey, hasDuplicates};
+  return (...rest) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback.apply(this, rest), timeoutDelay);
+  };
+}
+
+function throttle (callback, delayBetweenFrames) {
+  let lastTime = 0;
+  return (...rest) => {
+    const now = new Date();
+    if (now - lastTime >= delayBetweenFrames) {
+      callback.apply(this, rest);
+      lastTime = now;
+    }
+  };
+}
+
+export {getRandomInteger, getRandomArrayElement, isEscapeKey, hasDuplicates, throttle, debounce};

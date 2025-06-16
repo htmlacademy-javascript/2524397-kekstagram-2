@@ -1,7 +1,5 @@
 import {isEscapeKey, hasDuplicates} from './utils';
 import {imageResize, resetEffects} from './img-editor';
-import {showSuccessMessage, showErrorMessage} from './img-form-submit';
-import {postData} from './api';
 
 const COMMENT_MAX_LENGTH = 140;
 const HASHTAGS_MAX_COUNT = 5;
@@ -90,27 +88,9 @@ function validateComments (value) {
 
 imgUploadInput.addEventListener('change', openModal);
 
-const imgUploadSubmitButton = document.querySelector('.img-upload__submit');
+function validateForm () {
+  return pristineImgUpload.validate();
+}
 
-const blockSubmitButton = () => {
-  imgUploadSubmitButton.disabled = true;
-  imgUploadSubmitButton.textContent = 'Публикую...';
-};
-
-const unblockSubmitButton = () => {
-  imgUploadSubmitButton.disabled = false;
-  imgUploadSubmitButton.textContent = 'Опубликовать';
-};
-
-imgUploadForm.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-
-  const isValid = pristineImgUpload.validate();
-  if (!isValid) {
-    return;
-  }
-  blockSubmitButton();
-  const formData = new FormData(evt.target);
-  postData (formData, showSuccessMessage, unblockSubmitButton, closeModal, showErrorMessage);
-});
+export {validateForm, closeModal};
 

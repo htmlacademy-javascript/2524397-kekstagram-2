@@ -34,5 +34,4 @@ const createMiniatures = function(array) {
   });
 };
 
-
 export {createMiniatures};
