@@ -1,4 +1,19 @@
 import {isEscapeKey} from './utils';
+import {postData} from './api';
+import {validateForm, closeModal} from './img-form-validate';
+
+const imgUploadSubmitButton = document.querySelector('.img-upload__submit');
+const imgUploadForm = document.querySelector('.img-upload__form');
+
+const blockSubmitButton = () => {
+  imgUploadSubmitButton.disabled = true;
+  imgUploadSubmitButton.textContent = 'Публикую...';
+};
+
+const unblockSubmitButton = () => {
+  imgUploadSubmitButton.disabled = false;
+  imgUploadSubmitButton.textContent = 'Опубликовать';
+};
 
 function showErrorMessageData() {
   const errorMessageTemplate = document.querySelector('#data-error');
@@ -54,6 +69,9 @@ function showErrorMessage(){
       evt.preventDefault();
       evt.stopPropagation();
       errorContainer.remove();
+      document.body.removeEventListener('keydown', onErrorMessageEscapeKeywdown);
+      // eslint-disable-next-line no-use-before-define
+      document.removeEventListener('click', closEerrorMessageOutArea);
     }
   };
 
@@ -72,5 +90,17 @@ function showErrorMessage(){
   document.body.addEventListener('keydown', onErrorMessageEscapeKeywdown);
   document.addEventListener('click', closEerrorMessageOutArea);
 }
+
+imgUploadForm.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+
+  if (!validateForm()) {
+    return;
+  }
+  blockSubmitButton();
+  const formData = new FormData(evt.target);
+  postData (formData, showSuccessMessage, unblockSubmitButton, closeModal, showErrorMessage);
+});
+
 
 export {showErrorMessageData, showSuccessMessage, showErrorMessage};
