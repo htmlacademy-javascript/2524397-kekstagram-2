@@ -99,8 +99,18 @@ imgUploadForm.addEventListener('submit', (evt) => {
   }
   blockSubmitButton();
   const formData = new FormData(evt.target);
-  postData (formData, showSuccessMessage, unblockSubmitButton, closeModal, showErrorMessage);
+  postData (formData,
+    () => {
+      showSuccessMessage();
+      unblockSubmitButton();
+      closeModal();
+    },
+    () => {
+      showErrorMessage();
+      unblockSubmitButton();
+    }
+  );
 });
 
 
-export {showErrorMessageData, showSuccessMessage, showErrorMessage};
+export {showErrorMessageData};
