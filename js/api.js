@@ -10,7 +10,7 @@ function loadMiniaturesData (onSuccess, onError) {
 }
 
 function postData (data, onSuccess, onError) {
-  fetch('https://31.javascript.htmlacademy.pro/kekstagram',
+  fetch('https://31.javascript.htmlacademy.pro/kekstagram1',
     {
       method: 'POST',
       body: data,

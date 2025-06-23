@@ -64,24 +64,23 @@ function showErrorMessage(){
   const errorButton = errorContainer.querySelector('.error__button');
   const errorInner = errorContainer.querySelector('.error__inner');
 
-  const onErrorMessageEscapeKeywdown = function (evt) {
+  function onErrorMessageEscapeKeywdown (evt) {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       evt.stopPropagation();
       errorContainer.remove();
       document.body.removeEventListener('keydown', onErrorMessageEscapeKeywdown);
-      // eslint-disable-next-line no-use-before-define
       document.removeEventListener('click', closEerrorMessageOutArea);
     }
-  };
+  }
 
-  const closEerrorMessageOutArea = function (evt) {
+  function closEerrorMessageOutArea (evt) {
     if (!errorInner.contains(evt.target)) {
       errorContainer.remove();
       document.body.removeEventListener('keydown', onErrorMessageEscapeKeywdown);
       document.removeEventListener('click', closEerrorMessageOutArea);
     }
-  };
+  }
 
   errorButton.addEventListener('click', () => {
     errorContainer.remove();
