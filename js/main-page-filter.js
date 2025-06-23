@@ -2,22 +2,10 @@ import {debounce} from './utils';
 
 const imgFiltersContainer = document.querySelector('.img-filters');
 
-const FILTERS_KEYS = {
-  default: 'filter-default',
-  random: 'filter-random',
-  discussed: 'filter-discussed'
-};
-
 const FILTERS = {
-  default: function(arr) {
-    return arr;
-  },
-  random: function(arr) {
-    return arr.toSorted(() => 0.5 - Math.random()).slice(0, 10);
-  },
-  discussed: function(arr) {
-    return arr.toSorted((a, b) => b.comments.length - a.comments.length);
-  },
+  'filter-default': (arr) => arr,
+  'filter-random': (arr) => arr.toSorted(() => 0.5 - Math.random()).slice(0, 10),
+  'filter-discussed': (arr) => arr.toSorted((a, b) => b.comments.length - a.comments.length),
 };
 
 function sortedFunction (dataArr, renderFunction) {
@@ -44,17 +32,13 @@ function sortedFunction (dataArr, renderFunction) {
       return;
     }
 
-    if (evt.target.id === FILTERS_KEYS.default) {
-      filteredData = FILTERS.default(currentData);
+    const currentFiltering = FILTERS[evt.target.id];
+
+    if(!currentFiltering) {
+      return;
     }
 
-    if (evt.target.id === FILTERS_KEYS.random) {
-      filteredData = FILTERS.random(currentData);
-    }
-
-    if (evt.target.id === FILTERS_KEYS.discussed) {
-      filteredData = FILTERS.discussed(currentData);
-    }
+    filteredData = currentFiltering(currentData);
 
     debouncedRender(filteredData);
   }

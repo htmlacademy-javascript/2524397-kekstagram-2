@@ -35,7 +35,7 @@ function showSuccessMessage() {
   const successButton = successContainer.querySelector('.success__button');
   const successInner = successContainer.querySelector('.success__inner');
 
-  const onSuccessMessageEscapeKeywdown = function (evt) {
+  const onSuccessMessageEscapeKeydown = function (evt) {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       successContainer.remove();
@@ -52,7 +52,7 @@ function showSuccessMessage() {
     successContainer.remove();
   });
 
-  document.addEventListener('keydown', onSuccessMessageEscapeKeywdown);
+  document.addEventListener('keydown', onSuccessMessageEscapeKeydown);
   document.addEventListener('click', closeSuccessMessageOutArea);
 }
 
@@ -64,31 +64,30 @@ function showErrorMessage(){
   const errorButton = errorContainer.querySelector('.error__button');
   const errorInner = errorContainer.querySelector('.error__inner');
 
-  const onErrorMessageEscapeKeywdown = function (evt) {
+  function onErrorMessageEscapeKeydown (evt) {
     if (isEscapeKey(evt)) {
       evt.preventDefault();
       evt.stopPropagation();
       errorContainer.remove();
-      document.body.removeEventListener('keydown', onErrorMessageEscapeKeywdown);
-      // eslint-disable-next-line no-use-before-define
-      document.removeEventListener('click', closEerrorMessageOutArea);
+      document.body.removeEventListener('keydown', onErrorMessageEscapeKeydown);
+      document.removeEventListener('click', closeErrorMessageOutArea);
     }
-  };
+  }
 
-  const closEerrorMessageOutArea = function (evt) {
+  function closeErrorMessageOutArea (evt) {
     if (!errorInner.contains(evt.target)) {
       errorContainer.remove();
-      document.body.removeEventListener('keydown', onErrorMessageEscapeKeywdown);
-      document.removeEventListener('click', closEerrorMessageOutArea);
+      document.body.removeEventListener('keydown', onErrorMessageEscapeKeydown);
+      document.removeEventListener('click', closeErrorMessageOutArea);
     }
-  };
+  }
 
   errorButton.addEventListener('click', () => {
     errorContainer.remove();
   });
 
-  document.body.addEventListener('keydown', onErrorMessageEscapeKeywdown);
-  document.addEventListener('click', closEerrorMessageOutArea);
+  document.body.addEventListener('keydown', onErrorMessageEscapeKeydown);
+  document.addEventListener('click', closeErrorMessageOutArea);
 }
 
 imgUploadForm.addEventListener('submit', (evt) => {
@@ -99,8 +98,18 @@ imgUploadForm.addEventListener('submit', (evt) => {
   }
   blockSubmitButton();
   const formData = new FormData(evt.target);
-  postData (formData, showSuccessMessage, unblockSubmitButton, closeModal, showErrorMessage);
+  postData (formData,
+    () => {
+      showSuccessMessage();
+      unblockSubmitButton();
+      closeModal();
+    },
+    () => {
+      showErrorMessage();
+      unblockSubmitButton();
+    }
+  );
 });
 
 
-export {showErrorMessageData, showSuccessMessage, showErrorMessage};
+export {showErrorMessageData};

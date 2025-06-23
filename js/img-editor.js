@@ -1,3 +1,5 @@
+import {onLoadImage} from './img-loader.js';
+
 const enlargeImageElement = document.querySelector('.scale__control--bigger');
 const minimizeImageElement = document.querySelector('.scale__control--smaller');
 const currentImageSizeElement = document.querySelector('.scale__control--value');
@@ -43,8 +45,6 @@ const imageResize = resizeImage();
 
 minimizeImageElement.addEventListener('click', imageResize.minimizeImage);
 enlargeImageElement.addEventListener('click', imageResize.enlargeImage);
-
-//СЛАЙДЕР
 
 const imgUploadEffects = document.querySelector('.img-upload__effects');
 const imgUpload = document.querySelector('.img-upload__effect-level');
@@ -156,5 +156,7 @@ imgUploadEffects.addEventListener('change', (evt) => {
     changeFilterTo(evt.target.value);
   }
 });
+
+onLoadImage();
 
 export {imageResize, resetEffects};

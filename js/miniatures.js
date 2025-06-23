@@ -7,6 +7,7 @@ const pictureTemplate = document.querySelector('#picture').content.querySelector
 const miniatures = document.createDocumentFragment();
 
 const createMiniatures = function(array) {
+  document.querySelector('.img-filters').classList.remove('img-filters--inactive');
   array.forEach(({id, url, description, likes, comments}) => {
     const minature = pictureTemplate.cloneNode(true);
     minature.querySelector('.picture__img').src = url;
