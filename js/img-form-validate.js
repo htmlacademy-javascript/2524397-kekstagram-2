@@ -56,7 +56,11 @@ pristineImgUpload.addValidator(hashtagsInput, validateWritingHashtags, 'Введ
 
 function validateWritingHashtags (value) {
   const hashtags = value.trim().toLowerCase();
-  const hashtagRegex = /^(#[a-zа-яё0-9]{1,19})(\s#[a-zа-яё0-9]{1,19})*$/i;
+  const hashtagRegex = /^(#[a-zа-яё0-9]{1,19})(\s+#[a-zа-яё0-9]{1,19})*$/i;
+  if (hashtags === '') {
+    return true;
+  }
+
   return hashtagRegex.test(hashtags);
 }
 

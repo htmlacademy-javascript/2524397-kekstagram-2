@@ -4,6 +4,11 @@ const enlargeImageElement = document.querySelector('.scale__control--bigger');
 const minimizeImageElement = document.querySelector('.scale__control--smaller');
 const currentImageSizeElement = document.querySelector('.scale__control--value');
 const imgPreview = document.querySelector('.img-upload__preview img');
+const imgUploadEffects = document.querySelector('.img-upload__effects');
+const imgUpload = document.querySelector('.img-upload__effect-level');
+const effectLevel = document.querySelector('.effect-level__value');
+const slider = document.querySelector('.effect-level__slider');
+const effectNone = document.querySelector('#effect-none');
 
 const SCALE_IMAGE_CONFIG = {
   START: 100,
@@ -42,15 +47,6 @@ function resizeImage () {
 }
 
 const imageResize = resizeImage();
-
-minimizeImageElement.addEventListener('click', imageResize.minimizeImage);
-enlargeImageElement.addEventListener('click', imageResize.enlargeImage);
-
-const imgUploadEffects = document.querySelector('.img-upload__effects');
-const imgUpload = document.querySelector('.img-upload__effect-level');
-const effectLevel = document.querySelector('.effect-level__value');
-const slider = document.querySelector('.effect-level__slider');
-const effectNone = document.querySelector('#effect-none');
 
 const FILTERS_CONFIG = {
   none: {
@@ -96,6 +92,9 @@ const FILTERS_CONFIG = {
     prefix: '',
   }
 };
+
+minimizeImageElement.addEventListener('click', imageResize.minimizeImage);
+enlargeImageElement.addEventListener('click', imageResize.enlargeImage);
 
 noUiSlider.create(slider, {
   start: FILTERS_CONFIG.none.start,
