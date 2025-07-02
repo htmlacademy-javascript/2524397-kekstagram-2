@@ -1,8 +1,7 @@
 import {getRandomInteger, getRandomArrayElement} from './utils.js';
 
 const PHOTO_POSTS_QUANTITY = 25;
-
-const PHOTO_DESCRIPTION = ['Получилось хорошо', 'Вот какая красота', 'Можно было лучше', 'Фотография не очень'];
+const PHOTO_DESCRIPTIONS = ['Получилось хорошо', 'Вот какая красота', 'Можно было лучше', 'Фотография не очень'];
 const USERS_NAMES = ['Антон','Борис','Владимир','Григорий','Дмитрий','Елесей','Жанна','Зинаида','Ирина'];
 const USERS_COMMENTS = ['Всё отлично!','В целом всё неплохо. Но не всё.','Когда вы делаете фотографию, хорошо бы убирать палец из кадра. В конце концов это просто непрофессионально.','Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.','Я поскользнулся на банановой кожуре и уронил фотоаппарат на кота и у меня получилась фотография лучше.','Лица у людей на фотке перекошены, как будто их избивают. Как можно было поймать такой неудачный момент?!'];
 
@@ -28,7 +27,7 @@ const getUrlId = counter();
 const createPhotoDescription = () => ({
   photoId: getPhotoId(),
   url: `photos/${getUrlId()}.jpg`,
-  description:  getRandomArrayElement(PHOTO_DESCRIPTION),
+  description:  getRandomArrayElement(PHOTO_DESCRIPTIONS),
   likes: getRandomInteger(15, 200),
   comments: Array.from({length: getRandomInteger(0, 30)}, () => ({
     commentId: getCommentId(),
